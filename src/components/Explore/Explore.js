@@ -96,7 +96,7 @@ export default function Explore() {
           showPost ? " h-auto overflow-hidden" : ""
         }`}
       >
-        <div className="flex w-screen justify-center fixed top-0 bg-white shadow-lg ml-0 md:ml-16 z-10">
+        <div className="flex w-screen justify-center fixed top-0 bg-white shadow-lg ml-0 z-10">
           <SearchBar />
         </div>
         <div

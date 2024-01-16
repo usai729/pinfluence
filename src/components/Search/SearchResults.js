@@ -19,10 +19,10 @@ function SearchResults(props) {
   return (
     <>
       <Nav />
-      <div className="flex w-screen justify-center fixed top-0 bg-white shadow-lg ml-0 z-10">
+      <div className="flex w-screen justify-center sticky top-0 bg-white shadow-lg ml-0 z-10 rounded-b-lg">
         <SearchBar />
       </div>
-      <div className="flex items-center mt-12 z-0 justify-center">
+      <div className="flex items-center z-0 justify-center">
         <div className="flex flex-col bg-white shadow-md p-6 md:w-[50vw] md:min-h-[90vh] md:max-h-[90vh] overflow-y-auto rounded-b-xl">
           <div
             className="flex justify-evenly items-center"

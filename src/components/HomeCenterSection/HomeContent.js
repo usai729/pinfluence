@@ -17,7 +17,7 @@ export default function HomeContent(props) {
   return (
     <>
       <div
-        className="flex flex-col border-gray-200 border-2 rounded-lg m-0 mt-2 md:m-2 pt-2 pb-2 w-screen md:w-5/12 md:min-w5/12 shadow-xl bg-white "
+        className="flex flex-col border-gray-200 border-2 rounded-xl m-0 mt-2 md:m-2 pt-2 pb-2 w-screen md:w-5/12 md:min-w5/12 shadow-xl bg-white "
         style={{
           gap: "0",
         }}

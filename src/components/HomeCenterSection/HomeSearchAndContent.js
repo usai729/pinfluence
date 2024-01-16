@@ -97,14 +97,14 @@ export default function HomeSearchAndContent() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center overflow-x-hidden md:pl-12 lg:pl-12">
-      <div className="flex w-screen justify-center fixed top-0 bg-white shadow-lg ml-0 md:ml-20">
+    <div className="flex flex-col justify-center items-center overflow-x-hidden">
+      <div className="flex w-screen justify-center fixed top-0 bg-white shadow-lg ml-0">
         <SearchBar />
       </div>
       {/* NOTES */}
       <span className="w-screen mt-5 mb-2 border-t-2 border-gray-200"></span>
       <div className="flex flex-col lg:grid md:grid-cols-3 mt-8">
-        <div className="flex flex-col max-w-[45vh] max-h-[80vh] overflow-y-auto overflow-x-hidden fixed h-screen shadow-lg m-4 ml-8 p-4 invisible lg:visible bg-white border-gray-200 border-2 rounded-lg scrollbar scrollbar-w-1 scrollbar-track-transparent scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full">
+        <div className="flex flex-col max-w-[45vh] max-h-[80vh] overflow-y-auto overflow-x-hidden fixed h-screen shadow-xl m-4 ml-8 p-4 invisible lg:visible bg-white border-gray-200 border-2 rounded-lg scrollbar scrollbar-w-1 scrollbar-track-transparent scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full">
           <div className="bg-white">
             <p className="text-lg font-semibold">&nbsp;Notes</p>
           </div>
@@ -274,7 +274,7 @@ export default function HomeSearchAndContent() {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col max-h-[50vh] w-[18vw] overflow-y-auto h-screen p-2 border-2 border-gray-200 rounded-lg shadow-lg scrollbar scrollbar-w-1 scrollbar-track-transparent scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full bg-white">
+          <div className="flex flex-col max-h-[50vh] w-[18vw] overflow-y-auto h-screen p-2 border-2 border-gray-200 rounded-xl shadow-lg scrollbar scrollbar-w-1 scrollbar-track-transparent scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full bg-white">
             <p className="font-semibold">Top Accounts to Follow</p>
             <span className="border-t-2 border-accent mt-2 mb-2"></span>
             <div className="flex items-center justify-evenly mb-2 w-full">
