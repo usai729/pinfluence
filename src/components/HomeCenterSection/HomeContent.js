@@ -27,8 +27,8 @@ export default function HomeContent(props) {
             <img
               src={defaultUser}
               alt={username}
-              width={"10%"}
-              height={"10%"}
+              width={"40rem"}
+              height={"40rem"}
               className="rounded-full"
             />
             <Link>&nbsp;{username}</Link>
