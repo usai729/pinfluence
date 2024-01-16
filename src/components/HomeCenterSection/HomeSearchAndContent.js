@@ -30,7 +30,7 @@ export default function HomeSearchAndContent() {
   const [userData, setUserData] = useState(null);
   const [user] = useAuthState(authInstance);
   const [note, setNote] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("shdakyw");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -143,13 +143,13 @@ export default function HomeSearchAndContent() {
            *
            * Same data for mobile part of the section
            */}
-          <div className="flex flex-col mt-4 border-gray-200 border-2 p-2 rounded-md shadow-md bg-frost">
+          <div className="flex flex-col mt-4 border-gray-200 border-2 p-2 rounded-md shadow-md bg-frost sticky top-0">
             <div className="flex items-center">
               <img
                 src={defaultUser}
                 alt={username}
-                width={"13%"}
-                height={"13%"}
+                width={"38rem"}
+                height={"38rem"}
                 style={{
                   objectFit: "cover",
                 }}
@@ -252,7 +252,7 @@ export default function HomeSearchAndContent() {
         </div>
         <div className="flex flex-col mt-35 fixed right-0 max-w-[40vh] m-4 invisible lg:visible">
           <div className="flex justify-between">
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-4 sticky top-0">
               <img
                 src={userData?.DP || user?.photoURL || defaultUser}
                 className="rounded-full shadow-lg"
@@ -274,23 +274,27 @@ export default function HomeSearchAndContent() {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col max-h-[50vh] overflow-y-auto h-screen p-2 border-2 border-gray-200 rounded-lg shadow-lg scrollbar scrollbar-w-1 scrollbar-track-transparent scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full bg-white">
+          <div className="flex flex-col max-h-[50vh] w-[18vw] overflow-y-auto h-screen p-2 border-2 border-gray-200 rounded-lg shadow-lg scrollbar scrollbar-w-1 scrollbar-track-transparent scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full bg-white">
             <p className="font-semibold">Top Accounts to Follow</p>
             <span className="border-t-2 border-accent mt-2 mb-2"></span>
-            <div className="flex items-center justify-evenly mb-2">
-              <div className="flex items-center">
+            <div className="flex items-center justify-evenly mb-2 w-full">
+              <div className="flex items-center w-full">
                 <img
                   src={defaultUser}
                   alt={username}
-                  width={"15%"}
-                  height={"15%"}
+                  width={"40rem"}
+                  height={"40rem"}
                   className="rounded-full"
                 />{" "}
                 <Link
                   to={`/user/username`}
-                  className="text-sm font-semibold font-otherNames flex"
+                  className="text-sm font-semibold font-otherNames"
                 >
-                  &nbsp;@{username}&nbsp;
+                  &nbsp;@
+                  {username.length > 10
+                    ? username.substring(0, 10) + "..."
+                    : username}
+                  &nbsp;
                   <span className="font-emoji">
                     {emojiMap[username[0] /*.toUpperCase()*/]}
                   </span>
