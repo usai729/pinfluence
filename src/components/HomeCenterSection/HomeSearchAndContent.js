@@ -30,7 +30,7 @@ export default function HomeSearchAndContent() {
   const [userData, setUserData] = useState(null);
   const [user] = useAuthState(authInstance);
   const [note, setNote] = useState("");
-  const [username, setUsername] = useState("shdakyw");
+  const [username, setUsername] = useState("shdakywdjshadbhyug");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -294,10 +294,9 @@ export default function HomeSearchAndContent() {
                   {username.length > 10
                     ? username.substring(0, 10) + "..."
                     : username}
+                  {emojiMap[username[0]?.toUpperCase()]}
                   &nbsp;
-                  <span className="font-emoji">
-                    {emojiMap[username[0] /*.toUpperCase()*/]}
-                  </span>
+                  <span className="font-emoji">{}</span>
                 </Link>
               </div>
               <button className="border-1 border-primary  text-primary text-sm p-1 pl-2 pr-2 rounded-lg hover:text-white hover:bg-text hover:border-0">
