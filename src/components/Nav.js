@@ -88,12 +88,12 @@ export default function Nav() {
               {location.pathname !== "/" ? (
                 <AiOutlineHome
                   size={40}
-                  className="m-3 p-2 rounded-3xl md:md:bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
+                  className="m-3 p-2 bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
                 />
               ) : (
                 <AiFillHome
                   size={40}
-                  className="m-3 p-2 rounded-3xl md:md:bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
+                  className="m-3 p-2 bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
                 />
               )}
             </Link>
@@ -101,31 +101,31 @@ export default function Nav() {
               {location.pathname !== "/explore" ? (
                 <MdOutlineExplore
                   size={40}
-                  className="m-3 p-2 rounded-3xl md:bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
+                  className="m-3 p-2 bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
                 />
               ) : (
                 <MdExplore
                   size={40}
-                  className="m-3 p-2 rounded-3xl md:bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
+                  className="m-3 p-2 bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
                 />
               )}
             </Link>
             <Link to={"/new"}>
               <AiOutlinePlus
                 size={40}
-                className="m-3 p-2 rounded-3xl md:bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
+                className="m-3 p-2 bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
               />
             </Link>
             <Link to="/myprofile">
               {location.pathname !== "/myprofile" ? (
                 <RiAccountCircleLine
                   size={40}
-                  className="m-3 p-2 rounded-3xl md:bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
+                  className="m-3 p-2 bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
                 />
               ) : (
                 <RiAccountCircleFill
                   size={40}
-                  className="m-3 p-2 rounded-3xl md:bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
+                  className="m-3 p-2 bg-white text-primary cursor-pointer transition-all ease-in-out duration-500 hover:rounded-md"
                 />
               )}
             </Link>
