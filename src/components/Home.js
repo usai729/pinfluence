@@ -38,9 +38,9 @@ export default function Home() {
       <Nav />
       <div className="flex justify-center items-center w-full">
         <HomeSearchAndContent />
-        <div className="bottom-5 right-5 fixed">
+        {/* <div className="top-5 right-5 fixed">
           <LogoutBtn />
-        </div>
+        </div> */}
       </div>
     </>
   );

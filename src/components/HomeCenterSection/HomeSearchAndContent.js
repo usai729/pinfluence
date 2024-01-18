@@ -23,7 +23,7 @@ import {
 } from "firebase/firestore";
 
 import { FaLinkedin } from "react-icons/fa";
-import { emojiMap } from "../Exports";
+import LogoutBtn, { emojiMap } from "../Exports";
 
 export default function HomeSearchAndContent() {
   const [writing, setWriting] = useState("");
@@ -252,26 +252,29 @@ export default function HomeSearchAndContent() {
         </div>
         <div className="flex flex-col mt-35 fixed right-0 max-w-[40vh] m-4 invisible lg:visible">
           <div className="flex justify-between">
-            <div className="flex items-center mb-4 sticky top-0">
-              <img
-                src={userData?.DP || user?.photoURL || defaultUser}
-                className="rounded-full shadow-lg"
-                style={{
-                  objectFit: "cover",
-                  width: "4rem",
-                  height: "4rem",
-                }}
-              />
-              <Link to={`/myprofile`} className="text-sm font-bold">
-                <div className="flex flex-col">
-                  <p className="text-lg font-bold font-name">
-                    &nbsp;&nbsp;{userData?.name || user?.displayName}
-                  </p>
-                  <p className="text-xs font-otherNames">
-                    &nbsp;&nbsp;@{userData?.username || "" /*user?.uid*/}
-                  </p>
-                </div>
-              </Link>
+            <div className="flex items-center justify-between w-full mb-4 sticky top-0">
+              <div className="flex items-center">
+                <img
+                  src={userData?.DP || user?.photoURL || defaultUser}
+                  className="rounded-full shadow-lg"
+                  style={{
+                    objectFit: "cover",
+                    width: "4rem",
+                    height: "4rem",
+                  }}
+                />
+                <Link to={`/myprofile`} className="text-sm font-bold">
+                  <div className="flex flex-col">
+                    <p className="text-lg font-bold font-name">
+                      &nbsp;&nbsp;{userData?.name || user?.displayName}
+                    </p>
+                    <p className="text-xs font-otherNames">
+                      &nbsp;&nbsp;@{userData?.username || "" /*user?.uid*/}
+                    </p>
+                  </div>
+                </Link>
+              </div>
+              <LogoutBtn />
             </div>
           </div>
           <div className="flex flex-col max-h-[50vh] w-[18vw] overflow-y-auto h-screen p-2 border-2 border-gray-200 rounded-xl shadow-lg scrollbar scrollbar-w-1 scrollbar-track-transparent scrollbar-thumb-gray-300 scrollbar-thumb-rounded-full bg-white">

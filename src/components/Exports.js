@@ -234,7 +234,7 @@ export const LogoutBtn = () => {
 
   return (
     <button
-      className="flex bottom-0 shadow-lg rounded-full bg-white invisible md:visible transition-shadow ease-in-out duration-400 hover:shadow-2xl"
+      className="flex top-0 shadow-lg rounded-full bg-white invisible md:visible transition-shadow ease-in-out duration-400 hover:shadow-2xl cursor-pointer"
       onClick={handleLogout}
     >
       <AiOutlineLogout
