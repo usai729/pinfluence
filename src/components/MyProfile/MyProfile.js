@@ -3,14 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { ImCross } from "react-icons/im";
 import { AiFillEdit, AiOutlineLogout } from "react-icons/ai";
-import {BsFileEarmarkArrowUpFill} from "react-icons/bs"
-import {TbPhotoEdit} from "react-icons/tb"
+import { BsFileEarmarkArrowUpFill } from "react-icons/bs";
+import { TbPhotoEdit } from "react-icons/tb";
 import { MdOutlineDeleteForever } from "react-icons/md";
 
 import { Alert, useUpdateDP } from "../Exports";
-import { authInstance, db , storage} from "../../firebase";
+import { authInstance, db, storage } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { doc, getDoc , updateDoc} from "firebase/firestore"; // Import doc and getDoc
+import { doc, getDoc, updateDoc } from "firebase/firestore"; // Import doc and getDoc
 
 // import {setFile,updateDP} from "../Exports"
 
@@ -32,17 +32,16 @@ export default function MyProfile() {
   const [followersModal, setFollowersModal] = useState(false);
   const [editProfileModal, setEditProfileModal] = useState(false);
   const [showPost, setShowPost] = useState(false);
-  const [dpModal, setDpModal] = useState(false)
+  const [dpModal, setDpModal] = useState(false);
 
   const [userData, setUserData] = useState(null);
   const [editedUsername, setEditedUsername] = useState("");
   const [editedName, setEditedName] = useState("");
   const [alert, setAlert] = useState("");
 
-  const [newdp, setNewDp] = useState(null)
+  const [newdp, setNewDp] = useState(null);
 
   const filereader = new FileReader();
-  
 
   var username = "user";
 
@@ -52,14 +51,13 @@ export default function MyProfile() {
       setFollowersModal(false);
       setFollowingModal(false);
       setShowPost(false);
-      setDpModal(!dpModal)
+      setDpModal(!dpModal);
     }
   }, []);
 
   const navigate = useNavigate(); // Get the navigation function from React Router
 
   const [user] = useAuthState(authInstance);
-
 
   const handleLogout = () => {
     authInstance
@@ -74,14 +72,13 @@ export default function MyProfile() {
         console.error("Logout error:", error);
       });
   };
-  
 
   useEffect(() => {
     document.title = `PinFluence - My Profile - ${user?.displayName}`;
 
     document.addEventListener("keydown", closeModals, false);
 
-   // Function to fetch user data from Firestore
+    // Function to fetch user data from Firestore
     const fetchUserData = async () => {
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
@@ -104,10 +101,8 @@ export default function MyProfile() {
       }
     };
 
-
     fetchUserData();
-  }, [user]
-  );
+  }, [user]);
 
   const updateUserProfile = async () => {
     if (user) {
@@ -128,18 +123,17 @@ export default function MyProfile() {
         setEditProfileModal(false); // Close the "Edit Profile" modal
         setUserData(newNote);
 
-        navigate(0)
+        navigate(0);
       } catch (error) {
         console.error("Error updating user data in Firestore:", error);
       }
     }
   };
 
-
-  const {setFile, updateDP} = useUpdateDP(user?.uid);
+  const { setFile, updateDP } = useUpdateDP(user?.uid);
 
   function handleChange(e) {
-    setFile(e.target.files[0])
+    setFile(e.target.files[0]);
   }
 
   return (
@@ -148,34 +142,44 @@ export default function MyProfile() {
       <div
         className={`flex flex-col justify-content items-center mb-20 md:mb-0 overflow-x-hidden`}
       >
-        <div className="flex w-screen justify-center fixed top-0 bg-white shadow-lg ml-0 md:ml-16 z-10">
+        <div className="flex w-screen justify-center fixed top-0 bg-white shadow-lg ml-0 z-10">
           <SearchBar />
         </div>
         <div
           className={`${
-            followingModal || followersModal || editProfileModal || showPost || dpModal
+            followingModal ||
+            followersModal ||
+            editProfileModal ||
+            showPost ||
+            dpModal
               ? "blur-sm"
               : "blur-none"
           } flex flex-col justify-content items-center overflow-x-hidden transition-all duration-500 ease-in-out mt-12 rounded-br-xl rounded-bl-xl shadow-lg md:pr-4 md:pl-4 pb-4 z-0 bg-white`}
         >
           <div className="flex flex-col items-center mt-4 ">
             <div className="w-max relative">
-            <img
-              src={ userData?.DP || user?.photoURL || DefaultUser }
-              alt=""
-              className="group rounded-full cursor-pointer"
-              style={{
-                width: "15rem",
-                height: "15rem",
-                objectFit: "cover",
-              }} onClick={() => {
-                setDpModal(!dpModal)
-              }} />
-            <button type="submit" className="text-md invisible group-hover:visible hover:text-xl transition-all duration-200 ease-in-out absolute top-0 right-0 bottom-0 left-0 bg-white rounded-full p-2 outline-none" onClick={() => {
-                setDpModal(!dpModal)
-              }} >
-              <TbPhotoEdit className="text-md" />
-            </button>
+              <img
+                src={userData?.DP || user?.photoURL || DefaultUser}
+                alt=""
+                className="group rounded-full cursor-pointer"
+                style={{
+                  width: "15rem",
+                  height: "15rem",
+                  objectFit: "cover",
+                }}
+                onClick={() => {
+                  setDpModal(!dpModal);
+                }}
+              />
+              <button
+                type="submit"
+                className="text-md invisible group-hover:visible hover:text-xl transition-all duration-200 ease-in-out absolute top-0 right-0 bottom-0 left-0 bg-white rounded-full p-2 outline-none"
+                onClick={() => {
+                  setDpModal(!dpModal);
+                }}
+              >
+                <TbPhotoEdit className="text-md" />
+              </button>
             </div>
             <p className="text-2xl font-name font-bold">
               {userData?.name || user?.displayName}
@@ -323,109 +327,129 @@ export default function MyProfile() {
         <span className="border-2 border-gray-700 w-screen mt-4"></span>
         <div
           className={`flex justify-center items-center h-screen w-screen sm:m-4 md:0 ${
-            followersModal || followingModal || editProfileModal || showPost || dpModal
+            followersModal ||
+            followingModal ||
+            editProfileModal ||
+            showPost ||
+            dpModal
               ? "absolute visible"
               : "none invisible"
           }`}
         >
-          {
-            /**
-             * DP MODAL
-             */
-          }
-          {
-            dpModal ? (
-              <div
+          {/**
+           * DP MODAL
+           */}
+          {dpModal ? (
+            <div
               className={`following-followers-editprofile ${
-                dpModal
-                  ? "visible fixed"
-                  : "invisible"
-              } transition-opacity duration-500 ease-in-out flex justify-center bg-white shadow-xl rounded-lg flex p-4`}
+                dpModal ? "visible fixed" : "invisible"
+              } transition-opacity duration-500 ease-in-out justify-center bg-white shadow-xl rounded-lg flex p-4`}
               style={{
                 opacity:
                   followersModal ||
                   followingModal ||
                   editProfileModal ||
-                  showPost || dpModal
+                  showPost ||
+                  dpModal
                     ? 1
                     : 0,
                 transition: "opacity 0.5s ease",
               }}
             >
               <div className="flex flex-col justify-center items-center">
-              <div className="text-lg font-semibold flex justify-between">
-                <p>Edit profile picture</p>
-                &nbsp;
-                <ImCross
+                <div className="text-lg font-semibold flex justify-between">
+                  <p>Edit profile picture</p>
+                  &nbsp;
+                  <ImCross
                     className="cursor-pointer"
                     onClick={() => {
                       setDpModal(!setDpModal);
                     }}
                   />
-              </div>
-                <form 
-                  className="flex flex-col justify-content items-center m-4" 
+                </div>
+                <form
+                  className="flex flex-col justify-content items-center m-4"
                   onSubmit={(e) => {
-                    e.preventDefault()
+                    e.preventDefault();
                     updateDP();
-                }}>
+                  }}
+                >
                   {newdp === null ? (
-                    <label for="picknewdp" className="cursor-pointer" id="dplabel">
-                    <BsFileEarmarkArrowUpFill className="text-gray-300 hover:text-gray-500" size={60} />
-                  </label>
-                  ):<img 
-                    src={newdp}
-                    style={{
-                      width: "15rem",
-                      height: "15rem",
-                      objectFit: "cover",
-                    }}
-                    className="rounded-full shadow-lg mb-2"
-                    onClick={() => {
-                    document.getElementById("picknewdp").click()
-                  }} />}
-                  
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    className="m-2" 
-                    id="picknewdp" 
-                    style={{display: "none"}} 
+                    <label
+                      for="picknewdp"
+                      className="cursor-pointer"
+                      id="dplabel"
+                    >
+                      <BsFileEarmarkArrowUpFill
+                        className="text-gray-300 hover:text-gray-500"
+                        size={60}
+                      />
+                    </label>
+                  ) : (
+                    <img
+                      src={newdp}
+                      style={{
+                        width: "15rem",
+                        height: "15rem",
+                        objectFit: "cover",
+                      }}
+                      className="rounded-full shadow-lg mb-2"
+                      onClick={() => {
+                        document.getElementById("picknewdp").click();
+                      }}
+                    />
+                  )}
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="m-2"
+                    id="picknewdp"
+                    style={{ display: "none" }}
                     onChange={(e) => {
                       //e.preventDefault()
-                      handleChange(e)
-                    try{
-                    filereader.addEventListener("load", () => {
-                      setNewDp(filereader.result);
-                    });
-                    try {
-                      //filereader.readAsDataURL(e.target.files[0]);
-                      console.log((e.target.files[0]));
-                      filereader.readAsDataURL(e.target.files[0]);
-                    } catch (e) {
-                      //document.getElementById("alert").style.display = "block";
-                      console.log(e); 
-                    }
-                  } catch (e) {
-                    //document.getElementById("alert").style.display = "block";
-                    console.log(e);
-                  }
-                }}
-                  
-                />
-                  <button type="submit" className="rounded-md flex items-center justify-center border-0 w-full hover:w-full hover:border-0 bg-gradient-to-br hover:bg-gradient-to-tl from-primary via-30% to-text text-white font-semibold p-3 transition-all duration-200 ease-linear">Set Profile Picture</button>
+                      handleChange(e);
+                      try {
+                        filereader.addEventListener("load", () => {
+                          setNewDp(filereader.result);
+                        });
+                        try {
+                          //filereader.readAsDataURL(e.target.files[0]);
+                          console.log(e.target.files[0]);
+                          filereader.readAsDataURL(e.target.files[0]);
+                        } catch (e) {
+                          //document.getElementById("alert").style.display = "block";
+                          console.log(e);
+                        }
+                      } catch (e) {
+                        //document.getElementById("alert").style.display = "block";
+                        console.log(e);
+                      }
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    className="rounded-md flex items-center justify-center border-0 w-full hover:w-full hover:border-0 bg-gradient-to-br hover:bg-gradient-to-tl from-primary via-30% to-text text-white font-semibold p-3 transition-all duration-200 ease-linear"
+                  >
+                    Set Profile Picture
+                  </button>
                 </form>
-                </div>
               </div>
-            ):""
-          }
+            </div>
+          ) : (
+            ""
+          )}
           {/* 
               POST
             */}
           {showPost ? (
             <div
               className={`following-followers-editprofile ${
-                followingModal || followersModal || editProfileModal || showPost || dpModal
+                followingModal ||
+                followersModal ||
+                editProfileModal ||
+                showPost ||
+                dpModal
                   ? "visible fixed"
                   : "invisible"
               } transition-opacity duration-500 ease-in-out flex justify-center`}
@@ -562,8 +586,7 @@ export default function MyProfile() {
                       updateUserProfile();
                       updateDP();
                       //navigate(0);
-                    }
-                    }
+                    }}
                   >
                     <input
                       type="text"
@@ -571,25 +594,35 @@ export default function MyProfile() {
                       value={editedUsername}
                       className="focus:outline-none p-2 border-2 border-gray-300 rounded-md m-2 w-full text-center"
                       style={{
-                        border:"1px solid lightgray"
+                        border: "1px solid lightgray",
                       }}
                       onChange={(e) => {
-                        setEditedUsername(e.target.value)
+                        setEditedUsername(e.target.value);
 
                         const usernameRegex = /^[a-z_][a-zA-Z0-9_]*$/;
-                        document.getElementById("editbtn").style.display = "flex"
-                        if ((!usernameRegex.test(e.target.value) || e.target.value.includes(" ")) && e.target.value.length != 0) {
-                         document.getElementById("editbtn").style.cursor = "not-allowed"
-                         document.getElementById("editbtn").ariaDisabled = true
-                         e.target.style.border = "1px solid red"
+                        document.getElementById("editbtn").style.display =
+                          "flex";
+                        if (
+                          (!usernameRegex.test(e.target.value) ||
+                            e.target.value.includes(" ")) &&
+                          e.target.value.length != 0
+                        ) {
+                          document.getElementById("editbtn").style.cursor =
+                            "not-allowed";
+                          document.getElementById(
+                            "editbtn"
+                          ).ariaDisabled = true;
+                          e.target.style.border = "1px solid red";
                         } else {
-                          document.getElementById("editbtn").style.cursor = "pointer"
-                          document.getElementById("editbtn").ariaDisabled = false
-                          e.target.style.border = "1px solid lightgray"
+                          document.getElementById("editbtn").style.cursor =
+                            "pointer";
+                          document.getElementById(
+                            "editbtn"
+                          ).ariaDisabled = false;
+                          e.target.style.border = "1px solid lightgray";
                         }
-                      
-                      }} 
-                    />          
+                      }}
+                    />
                     <input
                       type="text"
                       placeholder="Edit password"
