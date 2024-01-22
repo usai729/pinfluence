@@ -5,6 +5,8 @@ import {
   AiFillHome,
   AiOutlinePlus,
   AiOutlineLogout,
+  AiOutlinePlusCircle,
+  AiFillPlusCircle,
 } from "react-icons/ai";
 import { MdOutlineExplore, MdExplore } from "react-icons/md";
 import {
@@ -88,50 +90,57 @@ export default function Nav() {
             </li>
           </ul>
         </div>
-      ) :*/ <div className="fixed bottom-5 w-screen flex justify-center rounded-full z-50 opacity-[0.8] hover:opacity-100 transition-opacity duration-300 ease-linear">
+      ) :*/ <div className="fixed bottom-5 w-screen flex justify-center rounded-full z-50 opacity-100 md:opacity-[0.8] hover:opacity-100 transition-opacity duration-300 ease-linear">
           <div className="flex justify-evenly bg-white rounded-full ml-5 mr-5 md:m-0 w-screen md:w-max shadow-xl hover:shadow-2xl drop-shadow-xl">
             <Link to={"/"}>
               {location.pathname !== "/" ? (
                 <AiOutlineHome
-                  size={40}
-                  className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                  size={35}
+                  className="m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                 />
               ) : (
                 <AiFillHome
-                  size={40}
-                  className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                  size={35}
+                  className="m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                 />
               )}
             </Link>
             <Link to="/explore">
               {location.pathname !== "/explore" ? (
                 <MdOutlineExplore
-                  size={40}
-                  className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                  size={35}
+                  className="m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                 />
               ) : (
                 <MdExplore
-                  size={40}
-                  className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                  size={35}
+                  className="m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                 />
               )}
             </Link>
             <Link to={"/new"}>
-              <AiOutlinePlus
-                size={40}
-                className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
-              />
+              {location.pathname !== "/new" ? (
+                <AiOutlinePlusCircle
+                  size={35}
+                  className="m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                />
+              ) : (
+                <AiFillPlusCircle
+                  size={35}
+                  className="m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                />
+              )}
             </Link>
             <Link to="/chats">
               {location.pathname !== "/chats" ? (
                 <RiMessage2Line
-                  size={40}
-                  className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                  size={35}
+                  className="m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                 />
               ) : (
                 <RiMessage2Fill
-                  size={40}
-                  className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                  size={35}
+                  className="m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                 />
               )}
             </Link>
@@ -139,13 +148,13 @@ export default function Nav() {
               <Link to="/myprofile">
                 {location.pathname !== "/myprofile" ? (
                   <RiAccountCircleLine
-                    size={40}
-                    className="group m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                    size={35}
+                    className="group m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                   />
                 ) : (
                   <RiAccountCircleFill
-                    size={40}
-                    className="group m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                    size={35}
+                    className="group m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                   />
                 )}
               </Link>
