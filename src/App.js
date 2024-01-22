@@ -10,9 +10,9 @@ import UserProfile from "./components/User/UserProfile";
 import Explore from "./components/Explore/Explore";
 import Post from "./components/Post";
 import { useEffect } from "react";
-import {LogoutBtn} from "../src/components/Exports";
+import { LogoutBtn } from "../src/components/Exports";
 import New from "./components/NewPost/New";
-import SearchResults from "./components/Search/SearchResults"
+import SearchResults from "./components/Search/SearchResults";
 import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/" element={<Home />} />
-        <Route path="/search/:searchtext" element={<SearchResults/>} />
+        <Route path="/search/:searchtext" element={<SearchResults />} />
         <Route path="explore" element={<Explore />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/user/:username" element={<UserProfile />} />
@@ -35,6 +35,8 @@ function App() {
           path="/post/:username/:postid"
           element={<Post fromHome={true} />}
         />
+        <Route path="/chats" />
+        <Route path="/c/:id" />
       </Routes>
     </BrowserRouter>
   );

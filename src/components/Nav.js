@@ -7,7 +7,13 @@ import {
   AiOutlineLogout,
 } from "react-icons/ai";
 import { MdOutlineExplore, MdExplore } from "react-icons/md";
-import { RiAccountCircleLine, RiAccountCircleFill } from "react-icons/ri";
+import {
+  RiAccountCircleLine,
+  RiAccountCircleFill,
+  RiMessage2Fill,
+  RiMedal2Line,
+  RiMessage2Line,
+} from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Nav() {
@@ -116,19 +122,37 @@ export default function Nav() {
                 className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
               />
             </Link>
-            <Link to="/myprofile">
-              {location.pathname !== "/myprofile" ? (
-                <RiAccountCircleLine
+            <Link to="/chats">
+              {location.pathname !== "/chats" ? (
+                <RiMessage2Line
                   size={40}
                   className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                 />
               ) : (
-                <RiAccountCircleFill
+                <RiMessage2Fill
                   size={40}
                   className="m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                 />
               )}
             </Link>
+            <div className="relative">
+              <Link to="/myprofile">
+                {location.pathname !== "/myprofile" ? (
+                  <RiAccountCircleLine
+                    size={40}
+                    className="group m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                  />
+                ) : (
+                  <RiAccountCircleFill
+                    size={40}
+                    className="group m-3 p-2 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
+                  />
+                )}
+              </Link>
+              <p className="absolute top-0 -left-9 md:-left-7 p-1 bg-white rounded-full shadow-md flex justify-center items-center font-semibold text-primary text-sm">
+                {40}
+              </p>
+            </div>
           </div>
         </div>
       }
