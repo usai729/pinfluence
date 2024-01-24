@@ -10,10 +10,10 @@ import UserProfile from "./components/User/UserProfile";
 import Explore from "./components/Explore/Explore";
 import Post from "./components/Post";
 import { useEffect } from "react";
-import { LogoutBtn } from "../src/components/Exports";
 import New from "./components/NewPost/New";
 import SearchResults from "./components/Search/SearchResults";
 import { onAuthStateChanged } from "firebase/auth";
+import Chats from "./components/Chats";
 
 function App() {
   useEffect(() => {
@@ -35,8 +35,8 @@ function App() {
           path="/post/:username/:postid"
           element={<Post fromHome={true} />}
         />
-        <Route path="/chats" />
-        <Route path="/c/:id" />
+        <Route path="/chats" element={<Chats />} />
+        <Route path="/c/:id" element={<Chats />} />
       </Routes>
     </BrowserRouter>
   );
