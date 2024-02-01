@@ -13,85 +13,104 @@ import NotesList from "./NotesList";
 import { authInstance, db } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
+  addDoc,
+  collection,
   doc,
   getDoc,
-  updateDoc,
-  collection,
-  setDocs,
+  getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
-import { FaLinkedin } from "react-icons/fa";
+import { FaLinkedin, FaSpinner } from "react-icons/fa";
 import LogoutBtn, { emojiMap } from "../Exports";
 
 export default function HomeSearchAndContent() {
-  const [writing, setWriting] = useState("");
   const [userData, setUserData] = useState(null);
   const [user] = useAuthState(authInstance);
-  const [note, setNote] = useState("");
   const [username, setUsername] = useState("shdakywdjshadbhyug");
 
+  const [note_loading, setNoteLoading] = useState(false);
+  const [myNote, setMyNote] = useState();
+  const [note, setNote] = useState("");
+
+  const fetchUserNote = async () => {
+    if (user) {
+      const notesRef = collection(db, "notes");
+
+      try {
+        const userNotes = await getDocs(
+          query(notesRef, where("id", "==", user.uid))
+        );
+
+        userNotes.forEach((notes) => {
+          setMyNote(notes.data());
+
+          console.log(myNote);
+        });
+      } catch (error) {
+        console.error("Error fetching user note from Firestore:", error);
+      }
+    } else {
+      console.error("User data does not exist in Firestore");
+    }
+  };
+
+  const fetchUserData = async () => {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+
+      try {
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const userDataFromFirestore = userDocSnapshot.data();
+          setUserData(userDataFromFirestore);
+        }
+      } catch (error) {
+        console.error("Error fetching user data from Firestore:", error);
+      }
+    }
+  };
+
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-
-        try {
-          const userDocSnapshot = await getDoc(userDocRef);
-          if (userDocSnapshot.exists()) {
-            const userDataFromFirestore = userDocSnapshot.data();
-            setUserData(userDataFromFirestore);
-          }
-        } catch (error) {
-          console.error("Error fetching user data from Firestore:", error);
-        }
-      }
-    };
-
-    const fetchUserNote = async () => {
-      if (user) {
-        const notesRef = doc(db, "notes", user.uid);
-        try {
-          const userNotes = await getDoc(notesRef);
-          if (userNotes.exists()) {
-            const userNote = userNotes.data();
-            if (userNote) {
-              setNote(userNote.note);
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching user note from Firestore:", error);
-        }
-      } else {
-        console.error("User data does not exist in Firestore");
-      }
-    };
-
     fetchUserData();
     fetchUserNote();
   }, [user]);
 
-  const setNewNote = async () => {
-    if (user && userData) {
-      const notesRef = doc(db, "notes", user.uid);
-      const newNote = {
-        id: userData.id, // Assuming this is the username field
-        note: note,
-      };
-      try {
-        await updateDoc(notesRef, newNote);
-        // Update note directly within existing userData object
+  const setNewNote = async (e) => {
+    e.preventDefault();
 
-        setUserData((prevUserData) => {
-          const updatedUserData = { ...prevUserData };
-          updatedUserData.note = newNote.note;
-          return updatedUserData;
-        });
+    setNoteLoading(true);
+
+    if (user && userData) {
+      const notesRef = collection(db, "notes");
+
+      try {
+        const docSnapShot = await getDocs(
+          query(notesRef, where("id", "==", user.uid))
+        );
+
+        if (!docSnapShot.empty) {
+          docSnapShot.forEach(async (doc) => {
+            await updateDoc(doc.ref, {
+              id: user.uid,
+              note: note,
+            });
+          });
+        } else {
+          await addDoc(notesRef, {
+            id: user.uid,
+            note: note,
+          });
+        }
       } catch (error) {
-        console.error("Error updating note:", error);
+        console.error("Error updating or adding note:", error);
+      } finally {
+        setNoteLoading(false);
       }
     } else {
+      setNoteLoading(false);
       console.error("User data does not exist in Firestore");
     }
   };
@@ -111,10 +130,7 @@ export default function HomeSearchAndContent() {
           <span className="border-t-2 border-accent mt-2 mb-2"></span>
           <form
             className="flex flex-col border-2 border-gray-300 rounded-md shadow-md bg-frost"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setNewNote();
-            }}
+            onSubmit={setNewNote}
           >
             <textarea
               type="text"
@@ -135,8 +151,9 @@ export default function HomeSearchAndContent() {
               type="submit"
               className="p-2 border-t-2 border-gray-300 hover-bg-gray-200 font-semibold"
               // onClick={uploadNote}
+              disabled={note_loading}
             >
-              Write
+              {note_loading ? <FaSpinner /> : "Write"}
             </button>
           </form>
           {/**
@@ -181,7 +198,10 @@ export default function HomeSearchAndContent() {
          */}
 
         <div className="flex md:hidden w-full max-w-[100vw] overflow-x-auto bg-white border-gray-200 border-2 rounded-lg shadow-md p-4">
-          <form className="flex flex-col border-2 border-gray-300 rounded-md shadow-md bg-frost max-w-[60vw]">
+          <form
+            className="flex flex-col border-2 border-gray-300 rounded-md shadow-md bg-frost max-w-[60vw]"
+            onSubmit={setNewNote}
+          >
             <textarea
               type="text"
               name=""
@@ -190,7 +210,7 @@ export default function HomeSearchAndContent() {
               maxLength={60}
               className="p-2 focus:outline-none w-[44vh]"
               onChange={(e) => {
-                setWriting(e.target.value);
+                setNote(e.target.value);
               }}
               style={{
                 resize: "none",
@@ -199,8 +219,10 @@ export default function HomeSearchAndContent() {
             <button
               type="submit"
               className="p-2 border-t-2 border-gray-300 hover:bg-gray-200 font-semibold"
+              onClick={setNewNote}
+              disabled={note_loading}
             >
-              Write
+              {note_loading ? <FaSpinner /> : "Write"}
             </button>
           </form>
           <div className="flex flex-col border-gray-200 border-2 p-2 rounded-md shadow-md bg-frost min-w-[60vw] max-w-[70vw] ml-2">

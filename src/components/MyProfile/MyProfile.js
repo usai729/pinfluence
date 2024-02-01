@@ -10,7 +10,16 @@ import { MdOutlineDeleteForever } from "react-icons/md";
 import { Alert, useUpdateDP } from "../Exports";
 import { authInstance, db, storage } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { doc, getDoc, updateDoc } from "firebase/firestore"; // Import doc and getDoc
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore"; // Import doc and getDoc
 
 // import {setFile,updateDP} from "../Exports"
 
@@ -35,9 +44,11 @@ export default function MyProfile() {
   const [dpModal, setDpModal] = useState(false);
 
   const [userData, setUserData] = useState(null);
+  const [userNote, setUserNote] = useState();
   const [editedUsername, setEditedUsername] = useState("");
   const [editedName, setEditedName] = useState("");
   const [alert, setAlert] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [newdp, setNewDp] = useState(null);
 
@@ -73,41 +84,57 @@ export default function MyProfile() {
       });
   };
 
+  const notesRef = doc(db, "notes", user.uid);
+
+  const fetchUserData = async () => {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      const notesDocRef = collection(db, "notes");
+
+      try {
+        setLoading(true);
+
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+
+          if (userData) {
+            setUserData(userData);
+            setEditedUsername(userData.username || ""); // Set the existing username to the state variable
+            setEditedName(userData.name || "");
+          }
+
+          const notesSnap = await getDocs(
+            query(notesDocRef, where("id", "==", user.uid))
+          );
+
+          if (!notesSnap.empty) {
+            notesSnap.forEach((note) => {
+              setUserNote(note.data().note);
+            });
+          }
+        } else {
+          console.error("User data does not exist in Firestore");
+        }
+      } catch (error) {
+        console.error("Error fetching user data from Firestore:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   useEffect(() => {
     document.title = `PinFluence - My Profile - ${user?.displayName}`;
 
     document.addEventListener("keydown", closeModals, false);
-
-    // Function to fetch user data from Firestore
-    const fetchUserData = async () => {
-      if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-
-        try {
-          const userDocSnapshot = await getDoc(userDocRef);
-          if (userDocSnapshot.exists()) {
-            const userData = userDocSnapshot.data();
-            if (userData) {
-              setUserData(userData);
-              setEditedUsername(userData.username || ""); // Set the existing username to the state variable
-              setEditedName(userData.name || ""); // Set the existing name to the state variable
-            }
-          } else {
-            console.error("User data does not exist in Firestore");
-          }
-        } catch (error) {
-          console.error("Error fetching user data from Firestore:", error);
-        }
-      }
-    };
-
     fetchUserData();
   }, [user]);
 
   const updateUserProfile = async () => {
     if (user) {
       const userDocRef = doc(db, "users", user.uid);
-      const notesRef = doc(db, "notes", user.uid);
+
       const newData = {
         username: editedUsername,
         name: editedName,
@@ -238,49 +265,65 @@ export default function MyProfile() {
               </optgroup>
             </select>
           </div>
-          <div className="flex shadow-md m-4 p-4 border-2 border-gray-300 rounded-md sm:max-w-[110vw] md:min-w-full md:max-w-[62vw] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full">
-            <div className="flex flex-row space-x-4 p-2">
-              {/**Repeat block */}
-              <div className="flex flex-col p-2 border-1 border-gray-300 rounded-md sm:min-w-[90vw] md:min-w-[20vw] md:w-[20vw]">
-                <div className="flex items-center">
-                  <img
-                    src={DefaultUser}
-                    alt={username}
-                    width={"10%"}
-                    height={"10%"}
-                    style={{
-                      objectFit: "cover",
-                    }}
-                    className="rounded-full"
-                  />
-                  <Link
-                    to={`/user/username`}
-                    className="text-sm font-semibold font-otherNames"
-                  >
-                    &nbsp;@{username}
-                    <span className="font-emoji">{emojiMap[username[0]]}</span>
-                  </Link>
-                </div>
-                <p className="mt-2 text-sm">
-                  Nunc sed sapien dignissim, cursus eros sed, faucibus nisl.
-                  Nullam nec pretium mauris. Aliquam ac porta dolor.
-                </p>
-                <div className="flex items-right justify-end">
-                  <MdOutlineDeleteForever
-                    size={20}
-                    className="cursor-pointer text-red-800 hover:text-accent"
-                  />
-                </div>
-              </div>
+          {userNote && (
+            <div className="flex shadow-md m-4 p-4 border-2 border-gray-300 rounded-md sm:max-w-[110vw] md:min-w-full md:max-w-[62vw] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-thumb-rounded-full">
+              <div className="flex flex-row space-x-4 p-2 w-full">
+                <div className="flex flex-col p-2 border-1 border-gray-300 rounded-md w-full">
+                  <div className="flex items-center w-full">
+                    <img
+                      src={userData?.DP || user?.photoURL || DefaultUser}
+                      alt={username}
+                      width={"35rem"}
+                      height={"35rem"}
+                      style={{
+                        objectFit: "cover",
+                      }}
+                      className="rounded-full"
+                    />
+                    <Link
+                      to={`/user/username`}
+                      className="text-sm font-semibold font-otherNames"
+                    >
+                      &nbsp;@{userData?.username}
+                      <span className="font-emoji">
+                        {emojiMap[username[0]]}
+                      </span>
+                    </Link>
+                  </div>
+                  <p className="mt-2 text-sm">{userNote}</p>
+                  <div className="flex items-right justify-end">
+                    <MdOutlineDeleteForever
+                      size={20}
+                      className="cursor-pointer text-red-800 hover:text-accent"
+                      onClick={async () => {
+                        const notesRef = collection(db, "notes"); // Make sure this is properly defined
 
-              {/*** */}
+                        const notesSnap = await getDocs(
+                          query(notesRef, where("id", "==", user.uid))
+                        );
 
-              {/* Repeat this content block as needed */}
-              {/* <div className="flex flex-col p-2 border-1 border-gray-300 rounded-md">
+                        if (!notesSnap.empty) {
+                          notesSnap.forEach(async (note) => {
+                            await deleteDoc(note.ref);
+                          });
+                        }
+
+                        fetchUserData();
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/*** */}
+
+                {/* Repeat this content block as needed */}
+                {/* <div className="flex flex-col p-2 border-1 border-gray-300 rounded-md">
       <!-- Content for the next item -->
     </div> */}
+              </div>
+              )
             </div>
-          </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-3">
             {/******* */

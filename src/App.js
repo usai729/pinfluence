@@ -13,7 +13,6 @@ import { useEffect } from "react";
 import New from "./components/NewPost/New";
 import SearchResults from "./components/Search/SearchResults";
 import { onAuthStateChanged } from "firebase/auth";
-import Chats from "./components/Chats";
 
 function App() {
   useEffect(() => {
@@ -35,8 +34,8 @@ function App() {
           path="/post/:username/:postid"
           element={<Post fromHome={true} />}
         />
-        <Route path="/chats" element={<Chats />} />
-        <Route path="/c/:id" element={<Chats />} />
+        {/* <Route path="/chats" element={<Chats />} />
+        <Route path="/c/:id" element={<Chats />} /> */}
       </Routes>
     </BrowserRouter>
   );
