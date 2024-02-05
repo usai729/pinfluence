@@ -470,12 +470,12 @@ export default function MyProfile() {
                       }
                     }}
                   />
-                  <button
+                  {/* <button
                     type="submit"
                     className="rounded-md flex items-center justify-center border-0 w-full hover:w-full hover:border-0 bg-gradient-to-br hover:bg-gradient-to-tl from-primary via-30% to-text text-white font-semibold p-3 transition-all duration-200 ease-linear"
                   >
                     Set Profile Picture
-                  </button>
+                  </button> */}
                 </form>
               </div>
             </div>

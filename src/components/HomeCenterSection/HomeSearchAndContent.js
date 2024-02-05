@@ -367,7 +367,7 @@ export default function HomeSearchAndContent() {
               textDecoration: "none",
             }}
           >
-            &#169;&nbsp;2023 <span className="font-logo">PinFluence</span>
+            &#169;&nbsp;2024 <span className="font-logo">PinFluence</span>
           </a>
         </div>
       </div>
