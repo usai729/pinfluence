@@ -25,6 +25,7 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { authInstance, db, storage } from "../firebase";
 import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { updateDoc, doc } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export const emojiMap = {
   A: "🚀",

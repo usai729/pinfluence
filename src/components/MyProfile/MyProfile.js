@@ -34,6 +34,7 @@ import IMG2 from "../../assets/backgrounds/2.jpg";
 import IMG3 from "../../assets/backgrounds/3.jpg";
 import IMG4 from "../../assets/backgrounds/4.jpg";
 import IMG5 from "../../assets/sample_post2.jpeg";
+import { CircularProgress } from "@mui/joy";
 
 export default function MyProfile() {
   const [sort, setSort] = useState("date");
@@ -49,6 +50,7 @@ export default function MyProfile() {
   const [editedName, setEditedName] = useState("");
   const [alert, setAlert] = useState("");
   const [loading, setLoading] = useState(false);
+  const [dpLoading, setDpLoading] = useState(false);
 
   const [newdp, setNewDp] = useState(null);
 
@@ -84,12 +86,11 @@ export default function MyProfile() {
       });
   };
 
-  const notesRef = doc(db, "notes", user.uid);
-
   const fetchUserData = async () => {
     if (user) {
       const userDocRef = doc(db, "users", user.uid);
       const notesDocRef = collection(db, "notes");
+      const notesRef = doc(db, "notes", user.uid);
 
       try {
         setLoading(true);
@@ -134,6 +135,7 @@ export default function MyProfile() {
   const updateUserProfile = async () => {
     if (user) {
       const userDocRef = doc(db, "users", user.uid);
+      const notesRef = doc(db, "notes", user.uid);
 
       const newData = {
         username: editedUsername,
@@ -157,7 +159,7 @@ export default function MyProfile() {
     }
   };
 
-  const { setFile, updateDP } = useUpdateDP(user?.uid);
+  const { setFile, updateDP } = useUpdateDP(authInstance?.currentUser?.uid);
 
   function handleChange(e) {
     setFile(e.target.files[0]);
@@ -413,7 +415,8 @@ export default function MyProfile() {
                 <form
                   className="flex flex-col justify-content items-center m-4"
                   onSubmit={(e) => {
-                    e.preventDefault();
+                    setDpLoading(true);   
+                    e.preventDefault()
                     updateDP();
                   }}
                 >
@@ -470,12 +473,15 @@ export default function MyProfile() {
                       }
                     }}
                   />
-                  {/* <button
+                  <button
                     type="submit"
-                    className="rounded-md flex items-center justify-center border-0 w-full hover:w-full hover:border-0 bg-gradient-to-br hover:bg-gradient-to-tl from-primary via-30% to-text text-white font-semibold p-3 transition-all duration-200 ease-linear"
+                    className="rounded-md mt-4 flex items-center justify-center border-0 w-full hover:w-full hover:border-0 bg-gradient-to-br hover:bg-gradient-to-tl from-primary via-30% to-text text-white font-semibold p-3 transition-all duration-200 ease-linear"
+                  disabled={dpLoading}
                   >
-                    Set Profile Picture
-                  </button> */}
+                    {
+                      dpLoading ? <CircularProgress /> : "Set Profile Picture"
+                    }
+                  </button>
                 </form>
               </div>
             </div>
