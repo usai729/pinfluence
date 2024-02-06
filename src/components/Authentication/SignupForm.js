@@ -7,8 +7,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { authInstance, provider , db} from "../../firebase";
-import {setDoc, doc, getDoc} from "firebase/firestore";
+import { authInstance, provider, db } from "../../firebase";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 
 import {
   AiFillEye,
@@ -61,66 +61,66 @@ export default function SignupForm() {
     });
   };
 
-const nextSection = async () => {
-  if (email.length !== 0 && password.length !== 0) {
-    if (email.includes("@")) {
-      try {
-        const userCredential = await createUserWithEmailAndPassword(
-          authInstance,
-          email,
-          password
-        );
-        const user = userCredential.user;
-        
-        // Get the user's name
-        const name = await get_random_name();
+  const nextSection = async () => {
+    if (email.length !== 0 && password.length !== 0) {
+      if (email.includes("@")) {
+        try {
+          const userCredential = await createUserWithEmailAndPassword(
+            authInstance,
+            email,
+            password
+          );
+          const user = userCredential.user;
 
-        // Set user document in Firestore
-        await setDoc(doc(db, "users", userCredential.user.uid), {
-          id: userCredential.user.uid,
-          username: userCredential.user.uid,
-          name: name,
-          profilephoto: "",
-          DateJoined: Date.now(),
-        });
+          // Get the user's name
+          const name = await get_random_name();
 
-        // Set initial note document in Firestore
-        await setDoc(doc(db, "notes", userCredential.user.uid), {
-          id: userCredential.user.uid,
-          note: "",
-        });
+          // Set user document in Firestore
+          await setDoc(doc(db, "users", userCredential.user.uid), {
+            id: userCredential.user.uid,
+            username: userCredential.user.uid,
+            name: name,
+            profilephoto: "",
+            DateJoined: Date.now(),
+          });
 
-        // You can do something with the newly created user here
-        localStorage.setItem("isAuth", true);
-        console.log("User created:", user);
+          // Set initial note document in Firestore
+          await setDoc(doc(db, "notes", userCredential.user.uid), {
+            id: userCredential.user.uid,
+            note: "",
+          });
 
-        // Navigate to the user's profile page
-        navigate("/myprofile");
-      } catch (error) {
-        if (error.code === "auth/email-already-in-use") {
-          setAlertContent("Email already exists. Please use a different email.");
-        } else {
-          setAlertContent("Error creating user: " + error.message);
+          // You can do something with the newly created user here
+          localStorage.setItem("isAuth", true);
+          console.log("User created:", user);
+
+          // Navigate to the user's profile page
+          navigate("/myprofile");
+        } catch (error) {
+          if (error.code === "auth/email-already-in-use") {
+            setAlertContent(
+              "Email already exists. Please use a different email."
+            );
+          } else {
+            setAlertContent("Error creating user: " + error.message);
+          }
+          const alertElement = document.getElementById("alert");
+          if (alertElement) {
+            alertElement.style.display = "block";
+            setTimeout(() => {
+              alertElement.style.display = "none";
+            }, 3500);
+          }
         }
-        const alertElement = document.getElementById("alert");
-        if (alertElement) {
-          alertElement.style.display = "block";
-          setTimeout(() => {
-            alertElement.style.display = "none";
-          }, 3500);
-        }
+      } else {
+        setAlertContent("Enter a valid email address");
+        document.getElementById("alert").style.display = "block";
       }
     } else {
-      setAlertContent("Enter a valid email address");
+      setAlertContent("E-mail/Password cannot be empty");
       document.getElementById("alert").style.display = "block";
     }
-  } else {
-    setAlertContent("E-mail/Password cannot be empty");
-    document.getElementById("alert").style.display = "block";
-  }
-};
-
-  
+  };
 
   // const cancelSignup = () => {
   //   document.getElementById("sec_1").style.display = "block";
@@ -153,23 +153,25 @@ const nextSection = async () => {
 
   const handleGoogleSignUp = async () => {
     const provider = new GoogleAuthProvider();
-  
+
     try {
       const result = await signInWithPopup(authInstance, provider);
-  
+
       if (result.user) {
         const userCredential = result.user;
         const uid = userCredential.uid;
-  
+
         // Check if the user already exists in Firestore
         const userRef = doc(db, "users", uid);
         const userDoc = await getDoc(userRef);
         const notesRef = doc(db, "notes", uid);
-  
+
         if (userDoc.exists()) {
           // User is already registered, show an alert
           console.log("User is already registered");
-          setAlertContent("User already exists. Please login with your Google account.");
+          setAlertContent(
+            "User already exists. Please login with your Google account."
+          );
           document.getElementById("alert").style.display = "block";
           // You can also redirect to the login page or perform other actions if needed
         } else {
@@ -180,22 +182,22 @@ const nextSection = async () => {
             name: userCredential.displayName,
             profilephoto: userCredential.photoURL,
             DateJoined: Date.now(),
-          }
+          };
           const notesDB = {
             id: uid,
             note: "",
-          }
-  
+          };
+
           // Create a Firestore document for the user
           await setDoc(userRef, userData);
-          
-          await setDoc(notesRef ,notesDB);
+
+          await setDoc(notesRef, notesDB);
 
           // Store the authentication state
           localStorage.setItem("isAuth", true);
-  
+
           console.log("User signed in and registered:", userCredential);
-  
+
           // Redirect to the home page
           navigate("/");
         }
@@ -208,9 +210,6 @@ const nextSection = async () => {
       console.error("Error during sign-up:", error);
     }
   };
-  
-  
-
 
   return (
     <>

@@ -131,7 +131,7 @@ export default function Nav() {
                 />
               )}
             </Link>
-            <Link to="/chats">
+            {/* <Link to="/chats">
               {location.pathname !== "/chats" ? (
                 <RiMessage2Line
                   size={35}
@@ -143,7 +143,7 @@ export default function Nav() {
                   className="m-3 p-1 text-primary cursor-pointer transition-all ease-in-out duration-200 hover:rounded-md hover:scale-125"
                 />
               )}
-            </Link>
+            </Link> */}
             <div className="relative">
               <Link to="/myprofile">
                 {location.pathname !== "/myprofile" ? (
