@@ -28,27 +28,28 @@ import LogoutBtn, { emojiMap } from "../Exports";
 
 export default function HomeSearchAndContent() {
   const [userData, setUserData] = useState(null);
-  const [user] = useAuthState(authInstance);
   const [username, setUsername] = useState("shdakywdjshadbhyug");
 
   const [note_loading, setNoteLoading] = useState(false);
   const [myNote, setMyNote] = useState();
   const [note, setNote] = useState("");
 
+  const [user] = useAuthState(authInstance);
+
   const fetchUserNote = async () => {
     if (user) {
-      const notesRef = collection(db, "notes");
+      const notesDocRef = collection(db, "notes");
 
       try {
-        const userNotes = await getDocs(
-          query(notesRef, where("id", "==", user.uid))
+        const notesSnap = await getDocs(
+          query(notesDocRef, where("id", "==", user?.uid))
         );
 
-        userNotes.forEach((notes) => {
-          setMyNote(notes.data());
-
-          console.log(myNote);
-        });
+        if (!notesSnap.empty) {
+          notesSnap.forEach((note) => {
+            setMyNote(note.data().note);
+          });
+        }
       } catch (error) {
         console.error("Error fetching user note from Firestore:", error);
       }
@@ -76,6 +77,8 @@ export default function HomeSearchAndContent() {
   useEffect(() => {
     fetchUserData();
     fetchUserNote();
+
+    console.log(myNote);
   }, [user]);
 
   const setNewNote = async (e) => {

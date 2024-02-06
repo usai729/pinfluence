@@ -311,6 +311,7 @@ export default function MyProfile() {
                         }
 
                         fetchUserData();
+                        navigate(0);
                       }}
                     />
                   </div>
@@ -415,8 +416,8 @@ export default function MyProfile() {
                 <form
                   className="flex flex-col justify-content items-center m-4"
                   onSubmit={(e) => {
-                    setDpLoading(true);   
-                    e.preventDefault()
+                    setDpLoading(true);
+                    e.preventDefault();
                     updateDP();
                   }}
                 >
@@ -461,7 +462,6 @@ export default function MyProfile() {
                         });
                         try {
                           //filereader.readAsDataURL(e.target.files[0]);
-                          console.log(e.target.files[0]);
                           filereader.readAsDataURL(e.target.files[0]);
                         } catch (e) {
                           //document.getElementById("alert").style.display = "block";
@@ -473,15 +473,15 @@ export default function MyProfile() {
                       }
                     }}
                   />
-                  <button
-                    type="submit"
-                    className="rounded-md mt-4 flex items-center justify-center border-0 w-full hover:w-full hover:border-0 bg-gradient-to-br hover:bg-gradient-to-tl from-primary via-30% to-text text-white font-semibold p-3 transition-all duration-200 ease-linear"
-                  disabled={dpLoading}
-                  >
-                    {
-                      dpLoading ? <CircularProgress /> : "Set Profile Picture"
-                    }
-                  </button>
+                  {newdp && newdp?.length > 0 && (
+                    <button
+                      type="submit"
+                      className="rounded-md mt-4 flex items-center justify-center border-0 w-full hover:w-full hover:border-0 bg-gradient-to-br hover:bg-gradient-to-tl from-primary via-30% to-text text-white font-semibold p-3 transition-all duration-200 ease-linear"
+                      disabled={dpLoading}
+                    >
+                      {dpLoading ? <CircularProgress /> : "Set Profile Picture"}
+                    </button>
+                  )}
                 </form>
               </div>
             </div>
@@ -634,7 +634,7 @@ export default function MyProfile() {
                       e.preventDefault();
                       updateUserProfile();
                       updateDP();
-                      //navigate(0);
+                      navigate(0);
                     }}
                   >
                     <input
