@@ -5,8 +5,6 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getStorage } from "firebase/storage";
 
-
-
 const firebaseConfig = {
   apiKey: "AIzaSyCPuDFON81nHTcDagv4iaC6nhh9LpZYV6k",
   authDomain: "pinfluence-2a434.firebaseapp.com",
